@@ -5,8 +5,8 @@ pipeline {
         AWS_ACCOUNT_ID="851725291001"
         AWS_DEFAULT_REGION="us-east-1"
         IMAGE_REPO_NAME="my-php"
-        IMAGE_TAG="v1"
-        REPOSITORY_URI = "851725291001.dkr.ecr.us-east-1.amazonaws.com/my-php"
+        IMAGE_TAG="latest"
+        REPOSITORY_URI="851725291001.dkr.ecr.us-east-1.amazonaws.com/my-php"
     }
 
     stages {
@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                    def dockerImage = docker.build "${REPOSITORY_URI}:${IMAGE_TAG}"
                 }
             }
         }
@@ -38,7 +38,7 @@ pipeline {
                 script {
                     // Push the Docker image to AWS ECR
                     sh '''
-                    docker push 851725291001.dkr.ecr.us-east-1.amazonaws.com/my-php
+                    docker push 851725291001.dkr.ecr.us-east-1.amazonaws.com/my-php:latest
                     '''
                 }
             }
